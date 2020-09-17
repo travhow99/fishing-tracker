@@ -1,0 +1,43 @@
+<div class="example-container mat-elevation-z8">
+    <h2>Fish Details</h2>
+    <div class="example-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="button-row">
+        <a mat-flat-button color="primary" [routerLink]="['/fish']">
+            <mat-icon>list</mat-icon>
+        </a>
+    </div>
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>
+                <h2>{{fish.type}}</h2>
+            </mat-card-title>
+            <mat-card-subtitle>{{fish.date}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <dl>
+                <dt>Type:</dt>
+                <dd>{{fish.type}}</dd>
+                <dt>Length:</dt>
+                <dd>{{fish.length}}</dd>
+                <dt>Time of Day:</dt>
+                <dd>{{fish.time_of_day}}</dd>
+                <dt>River:</dt>
+                <dd>{{fish.river}}</dd>
+                <dt>Status:</dt>
+                <dd>
+                    <h2>{{fish.status}}</h2>
+                </dd>
+            </dl>
+        </mat-card-content>
+        <mat-card-actions>
+            <a mat-flat-button color="primary" [routerLink]="['/edit-fish', fish._id]">
+                <mat-icon>edit</mat-icon> Fish
+            </a>
+            <a mat-flat-button color="warn" (click)="deleteFish(fish._id)">
+                <mat-icon>delete</mat-icon> Fish
+            </a>
+        </mat-card-actions>
+    </mat-card>
+</div>

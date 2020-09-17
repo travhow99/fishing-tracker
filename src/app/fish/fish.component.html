@@ -1,0 +1,43 @@
+<div class="th-container mat-elevation-z8">
+    <h2>September Fishing List</h2>
+    <div class="th-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="button-row">
+        <a mat-flat-button color="primary" [routerLink]="['/add-fish']">
+            <mat-icon>add</mat-icon> Fish
+        </a>
+        <a mat-flat-button color="accent" [routerLink]="['/fish-stat']">
+            <mat-icon>bar_chart</mat-icon> Statistic
+        </a>
+    </div>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="data" class="th-table" matSort matSortActive="name" matSortDisableClear
+            matSortDirection="asc">
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Fish Type</th>
+                <td mat-cell *matCellDef="let row">{{row.type}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="length">
+                <th mat-header-cell *matHeaderCellDef>Length</th>
+                <td mat-cell *matCellDef="let row">{{row.length}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let row">{{row.date}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="river">
+                <th mat-header-cell *matHeaderCellDef>River</th>
+                <td mat-cell *matCellDef="let row">{{row.river}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/fish-details/', row._id]">
+            </tr>
+        </table>
+    </div>
+</div>
