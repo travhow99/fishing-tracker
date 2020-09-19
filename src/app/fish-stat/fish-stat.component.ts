@@ -25,6 +25,7 @@ export class FishStatComponent implements OnInit {
 	constructor(private api: ApiService) { }
 
 	ngOnInit(): void {
+		this.getStatistics(this.label);
 	}
 
 	getStatistics(status: string) {
@@ -38,9 +39,9 @@ export class FishStatComponent implements OnInit {
 				this.stats.forEach((stat) => {
 					this.barChartLabels.push(stat._id.date);
 					chartdata.push(stat.count);
-					if (this.label === 'Positive') {
+					if (this.label === 'Rainbow') {
 						chartcolor.push('rgba(255, 165, 0, 0.5)');
-					} else if (this.label === 'Dead') {
+					} else if (this.label === 'Brown') {
 						chartcolor.push('rgba(255, 0, 0, 0.5)');
 					} else {
 						chartcolor.push('rgba(0, 255, 0, 0.5)');
@@ -53,5 +54,10 @@ export class FishStatComponent implements OnInit {
 				this.isLoadingResults = false;
 			});
 
+	}
+
+	changeStatus() {
+		this.isLoadingResults = true;
+		this.getStatistics(this.label);
 	}
 }

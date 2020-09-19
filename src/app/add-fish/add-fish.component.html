@@ -1,1 +1,76 @@
-<p>add-fish works!</p>
+<div class="th-container mat-elevation-z8">
+    <h2>Coronavirus Add Cases</h2>
+    <div class="th-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <div class="button-row">
+        <a mat-flat-button color="primary" [routerLink]="['/fish']">
+            <mat-icon>list</mat-icon>
+        </a>
+    </div>
+    <mat-card class="th-card">
+        <form [formGroup]="fishForm" (ngSubmit)="onFormSubmit()">
+            <mat-form-field class="th-full-width">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="type">
+                    <mat-option *ngFor="let tl of typeList" [value]="tl">
+                        {{tl}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    <span *ngIf="!fishForm.get('type').valid && fishForm.get('type').touched">Please choose
+                        Type</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="th-full-width">
+                <mat-label>River</mat-label>
+                <input matInput placeholder="River" formControlName="river" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!fishForm.get('river').valid && fishForm.get('river').touched">Please enter River</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="th-full-width">
+                <mat-label>Length</mat-label>
+                <input matInput type="number" placeholder="Length" formControlName="length" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!fishForm.get('length').valid && fishForm.get('length').touched">Please enter Length</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="th-full-width">
+                <mat-label>Area</mat-label>
+                <input matInput placeholder="Area" formControlName="area" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!fishForm.get('area').valid && fishForm.get('area').touched">Please enter
+                        Area</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="th-full-width">
+                <mat-label>Fly</mat-label>
+                <input matInput placeholder="Fly" formControlName="fly" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!fishForm.get('fly').valid && fishForm.get('fly').touched">Please enter Fly</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="th-full-width">
+                <mat-label>Date</mat-label>
+                <input matInput type="date" placeholder="Date" formControlName="date" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!fishForm.get('date').valid && fishForm.get('date').touched">Please enter
+                        Date</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="th-full-width">
+                <mat-label>Time of Day</mat-label>
+                <input matInput placeholder="Time of Day" formControlName="time_of_day" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!fishForm.get('time_of_day').valid && fishForm.get('time_of_day').touched">Please enter Time of Day</span>
+                </mat-error>
+            </mat-form-field>
+            <div class="button-row">
+                <button type="submit" [disabled]="!fishForm.valid" mat-flat-button color="primary">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+        </form>
+    </mat-card>
+</div>
