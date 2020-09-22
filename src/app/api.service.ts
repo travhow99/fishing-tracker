@@ -8,7 +8,8 @@ import { Statistics } from './statistics';
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = '/api/';
+// const apiUrl = '/api/';
+const apiUrl = 'http://localhost:3200/fish';
 
 @Injectable({
 	providedIn: 'root'
@@ -44,14 +45,16 @@ export class ApiService {
 	}
 
 	addFish(fish: Fish): Observable<Fish> {
-		return this.http.post<Fish>(apiUrl, fish, httpOptions).pipe(
-			tap((f: Fish) => console.log(`added fish w/ id=${f._id}`)),
+		const url = `${apiUrl}/add`
+		return this.http.post<Fish>(url, fish, httpOptions).pipe(
+			tap((f: Fish) => console.log(`added fish w/ id=${f._id}`, f)),
 			catchError(this.handleError<Fish>(`addFish`))
 		)
 	}
 
 	updateFish(id: string, fish: Fish): Observable<any> {
 		const url = `${apiUrl}/${id}`;
+		console.log(url);
 		return this.http.put(url, fish, httpOptions).pipe(
 			tap(_ => console.log(`updated fish w id ${id}`)),
 			catchError(this.handleError<any>('updateFish'))

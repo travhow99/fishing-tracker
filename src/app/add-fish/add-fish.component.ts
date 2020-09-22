@@ -35,9 +35,9 @@ export class AddFishComponent implements OnInit {
 	ngOnInit(): void {
 		this.fishForm = this.formBuilder.group({
 			type: [null, Validators.required],
-			length: [null],
+			length: [null, Validators.required],
 			date: [null, Validators.required],
-			time_of_day: [null],
+			time_of_day: [null, Validators.required],
 			river: [null],
 			area: [null],
 			fly: [null],
