@@ -9,7 +9,7 @@ const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 // const apiUrl = '/api/';
-const apiUrl = 'http://localhost:3200/fish';
+const apiUrl = 'http://localhost:3200';
 
 @Injectable({
 	providedIn: 'root'
@@ -29,15 +29,16 @@ export class ApiService {
 	}
 
 	getFish(): Observable<Fish[]> {
-		return this.http.get<Fish[]>(`${apiUrl}`)
+		const url = `${apiUrl}/fish`;
+		return this.http.get<Fish[]>(url)
 			.pipe(
-				tap(fish => console.log('fetched fish')),
+				tap((fish) => console.log('fetched fish')),
 				catchError(this.handleError('getFish', []))
 			);
 	}
 
 	getFishById(id: string): Observable<Fish> {
-		const url = `${apiUrl}/${id}`;
+		const url = `${apiUrl}/fish/${id}`;
 		return this.http.get<Fish>(url).pipe(
 			tap(_ => console.log(`fetched fish id=${id}`)),
 			catchError(this.handleError<Fish>(`getFishById id=${id}`))
@@ -45,7 +46,7 @@ export class ApiService {
 	}
 
 	addFish(fish: Fish): Observable<Fish> {
-		const url = `${apiUrl}/add`
+		const url = `${apiUrl}/fish/add`
 		return this.http.post<Fish>(url, fish, httpOptions).pipe(
 			tap((f: Fish) => console.log(`added fish w/ id=${f._id}`, f)),
 			catchError(this.handleError<Fish>(`addFish`))
@@ -53,7 +54,7 @@ export class ApiService {
 	}
 
 	updateFish(id: string, fish: Fish): Observable<any> {
-		const url = `${apiUrl}/${id}`;
+		const url = `${apiUrl}/fish/${id}`;
 		console.log(url);
 		return this.http.put(url, fish, httpOptions).pipe(
 			tap(_ => console.log(`updated fish w id ${id}`)),
@@ -62,18 +63,18 @@ export class ApiService {
 	}
 
 	deleteFish(id: string): Observable<Fish> {
-		const url = `${apiUrl}/${id}`;
+		const url = `${apiUrl}/fish/${id}`;
 		return this.http.delete<Fish>(url, httpOptions).pipe(
 			tap(_ => console.log(`deleted fish by id ${id}`)),
 			catchError(this.handleError<Fish>('deleteFish'))
 		)
 	}
 
-	getStatistics(status: string): Observable<Statistics> {
-		const url = `${apiUrl}/daily/${status}`;
-		return this.http.get<Statistics>(url).pipe(
-			tap(_ => console.log(`fetched statistics w status ${status}`)),
-			catchError(this.handleError<Statistics>('getStatistics'))
+	getStatistics(): Observable<Fish> {
+		const url = `${apiUrl}/tracker`;
+		return this.http.get<Fish>(url).pipe(
+			tap((fish) => console.log(`fetched fish`)),
+			catchError(this.handleError<Fish>('getStatistics'))
 		)
 	}
 }

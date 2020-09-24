@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { ApiService } from '../api.service';
-import { Statistics } from '../statistics';
+import { Fish } from '../fish';
 
 @Component({
 	selector: 'app-fish-stat',
@@ -10,7 +10,7 @@ import { Statistics } from '../statistics';
 	styleUrls: ['./fish-stat.component.scss']
 })
 export class FishStatComponent implements OnInit {
-	stats: Statistics[] = [];
+	stats: Fish[] = [];
 	label = 'Positive';
 	isLoadingResults = true;
 	barChartOptions: ChartOptions = {
@@ -25,29 +25,59 @@ export class FishStatComponent implements OnInit {
 	constructor(private api: ApiService) { }
 
 	ngOnInit(): void {
-		this.getStatistics(this.label);
+		this.getFish();
 	}
 
-	getStatistics(status: string) {
+	getDaysOfMonth() {
+		const d = new Date();
+
+		const totalDays = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); 
+
+		const days = [];
+
+		let x = 1;
+		while (x < totalDays) {
+			days.push(x);
+			x++;
+		}
+
+		return days;
+	}
+
+	getFish() {
 		this.barChartData = [{ data: [], backgroundColor: [], label: this.label }];
-		this.barChartLabels = [];
-		this.api.getStatistics(status)
+		this.barChartLabels = this.getDaysOfMonth();
+		this.api.getFish()
 			.subscribe((res: any) => {
 				this.stats = res;
 				const chartdata: number[] = [];
 				const chartcolor: string[] = [];
-				this.stats.forEach((stat) => {
-					this.barChartLabels.push(stat._id.date);
-					chartdata.push(stat.count);
-					if (this.label === 'Rainbow') {
-						chartcolor.push('rgba(255, 165, 0, 0.5)');
-					} else if (this.label === 'Brown') {
-						chartcolor.push('rgba(255, 0, 0, 0.5)');
-					} else {
-						chartcolor.push('rgba(0, 255, 0, 0.5)');
-					}
+
+				const days = this.getDaysOfMonth();
+
+				const data = {};
+				days.map((day) => {
+					const fish = this.stats.filter((f) => {
+						const d = new Date(f.date).getDate();
+						return (d == day);
+					})
+
+					data[day] = fish.length;
 				});
-				this.barChartData = [{ data: chartdata, backgroundColor: chartcolor, label: this.label }];
+
+				console.log(data)
+
+				Object.keys(data).map((d) => chartdata.push(data[d]))
+				// chartdata.push(Object.values(data));
+
+				chartcolor.push('rgba(255, 165, 0, 0.5)');
+
+				this.barChartData = [{
+					data: chartdata,
+					backgroundColor: chartcolor,
+					label: this.label
+				}];
+
 				this.isLoadingResults = false;
 			}, err => {
 				console.log(err);
@@ -58,6 +88,6 @@ export class FishStatComponent implements OnInit {
 
 	changeStatus() {
 		this.isLoadingResults = true;
-		this.getStatistics(this.label);
+		this.getFish();
 	}
 }
